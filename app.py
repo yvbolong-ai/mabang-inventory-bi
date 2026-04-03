@@ -89,7 +89,7 @@ def main():
 st.markdown('<p class="main-header">📦 马帮库存智能分析系统</p>', unsafe_allow_html=True)
 st.caption(f"数据更新时间: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
 
-# ============ 侧边栏配置 ============
+# 侧边栏配置
 with st.sidebar:
 st.markdown("## ⚙️ 分析配置")
 
@@ -122,7 +122,7 @@ config = {
 'warning': warning_threshold
 }
 
-# ============ 文件上传 ============
+# 文件上传
 st.markdown("### 📤 上传马帮库存Excel")
 
 uploaded_file = st.file_uploader(
@@ -148,7 +148,7 @@ st.markdown("""
 """)
 return
 
-# ============ 数据处理 ============
+# 数据处理
 try:
 with st.spinner("正在解析数据..."):
 df = process_excel(uploaded_file)
@@ -164,7 +164,7 @@ st.error(f"❌ 文件解析失败: {str(e)}")
 st.info("请确保Excel文件包含SKU、仓库、库存数量等基本信息")
 return
 
-# ============ KPI指标卡 ============
+# KPI指标卡
 st.markdown("---")
 
 # 计算KPI
@@ -187,12 +187,12 @@ delta=f"{urgent_count/total_sku*100:.1f}%" if total_sku > 0 else "0%")
 with col5:
 st.metric("🟡 需关注", f"{warning_count}")
 
-# ============ 标签页内容 ============
+# 标签页内容
 st.markdown("---")
 
 tab1, tab2, tab3 = st.tabs(["📈 销量分析", "📊 库存分布", "🚨 补货清单"])
 
-# ===== Tab 1: 销量分析 =====
+# Tab 1: 销量分析
 with tab1:
 st.markdown("### 📈 销量趋势分析")
 
@@ -252,7 +252,7 @@ display_df['avg_daily'] = display_df['avg_daily'].round(2)
 display_df = display_df.sort_values('sales_7d', ascending=False)
 st.dataframe(display_df, use_container_width=True)
 
-# ===== Tab 2: 库存分布 =====
+# Tab 2: 库存分布
 with tab2:
 st.markdown("### 📊 库存分布分析")
 
@@ -321,7 +321,7 @@ st.metric("⚠️ 断货风险SKU", f"{stockout_risk:.1f}%")
 with col5:
 st.metric("📊 平均可售天数", f"{avg_days:.1f}天")
 
-# ===== Tab 3: 补货清单 =====
+# Tab 3: 补货清单
 with tab3:
 st.markdown("### 🚨 智能补货建议")
 
@@ -406,6 +406,6 @@ wh_summary = replenish_df.groupby('warehouse').agg({
 wh_summary.columns = ['仓库', '需补货SKU数', '建议补货总量']
 st.dataframe(wh_summary, use_container_width=True)
 
-# ============ 运行 ============
+# 运行
 if __name__ == "__main__":
 main()
